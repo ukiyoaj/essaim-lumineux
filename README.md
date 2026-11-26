@@ -1,89 +1,91 @@
 # ✦ Essaim lumineux
 
-Un essaim de **milliers d'aiguilles de lumière** qui suit ton curseur sur un ciel de nuit, avec l'heure et la date en bas de l'écran.
-Quand tu bouges, l'essaim te poursuit en une longue vague ; quand tu t'arrêtes, il se range en un disque qui tourne autour du curseur.
+A swarm of **thousands of glowing needles** that follows your cursor across a night sky, with the time and date at the bottom of the screen.
+When you move, the swarm chases you in a long wave; when you stop, it settles into a disc spinning around the cursor.
 
-![Aperçu de l'essaim lumineux](apercu.png)
+![Essaim lumineux preview](apercu.png)
 
-![Le panneau de personnalisation, ambiance « Or »](apercu2.png)
+![The customization panel, "Or" (gold) theme](apercu2.png)
 
-**Démo en ligne :** https://ukiyoaj.github.io/essaim-lumineux/
+**Live demo:** https://ukiyoaj.github.io/essaim-lumineux/
 
-## Fonctionnalités
+## Features
 
-- Jusqu'à **12 000 particules** fluides, dessinées avec **WebGL** (aucune bibliothèque)
-- L'essaim **suit la souris** sur ordinateur et **le doigt** sur téléphone
-- **Clic / toucher** : l'essaim explose puis se reforme
-- **Double-clic** : plein écran
-- **Horloge** et date en français, en bas de l'écran
-- **Panneau « Couleurs »** :
-  - 6 ambiances prêtes : Émeraude, Néon, Braise, Glace, Sakura, Or
-  - 4 couleurs entièrement personnalisables
-  - nombre d'aiguilles et taille du disque réglables
-  - horloge affichable ou masquable
-  - tes réglages sont gardés dans le navigateur (`localStorage`)
+- Up to **12,000 smooth particles**, rendered with **WebGL** (no library)
+- The swarm **follows the mouse** on desktop and **your finger** on mobile
+- **Click / tap**: the swarm bursts, then re-forms
+- **Double-click**: full screen
+- **Clock** and date at the bottom of the screen
+- **"Couleurs" (Colors) panel**:
+  - 6 ready-made themes: Émeraude, Néon, Braise, Glace, Sakura, Or
+  - 4 fully customizable colors
+  - adjustable needle count and disc size
+  - show or hide the clock
+  - your settings are saved in the browser (`localStorage`)
 
-## Utilisation
+> The interface is in French. All the text lives in `index.html` and `js/essaim.js` if you want to translate it.
 
-Aucune installation : c'est du HTML, du CSS et du JavaScript pur.
+## Usage
+
+Nothing to install: it's plain HTML, CSS and JavaScript.
 
 ```bash
 git clone https://github.com/ukiyoaj/essaim-lumineux.git
 cd essaim-lumineux
 ```
 
-Puis ouvre `index.html` dans ton navigateur (double-clic sur le fichier).
+Then open `index.html` in your browser (double-click the file).
 
-## Structure
+## Project structure
 
 ```
 essaim-lumineux/
-├── index.html      # la page : canvas, horloge, panneau de réglages
+├── index.html      # the page: canvas, clock, settings panel
 ├── css/
-│   └── style.css   # le style (ciel, horloge, panneau)
+│   └── style.css   # styles (sky, clock, panel)
 ├── js/
-│   └── essaim.js   # la simulation et le rendu WebGL
-├── apercu.png      # capture : ambiance Émeraude
-├── apercu2.png     # capture : panneau Couleurs, ambiance Or
+│   └── essaim.js   # simulation and WebGL rendering
+├── apercu.png      # screenshot: Émeraude theme
+├── apercu2.png     # screenshot: Colors panel, Or theme
 ├── LICENSE
 └── README.md
 ```
 
-## Personnaliser dans le code
+## Customizing the code
 
-Tout se règle en haut de `js/essaim.js` :
+Everything is at the top of `js/essaim.js`:
 
-| Ce que tu veux changer | Où |
+| What you want to change | Where |
 |---|---|
-| Ajouter une ambiance de couleurs | tableau `AMBIANCES` |
-| Part de chaque couleur dans l'essaim | tableau `POIDS` |
-| Nombre de particules par défaut | `DEFAUT.nombre` |
-| Afficher l'horloge par défaut | `DEFAUT.horloge` |
+| Add a color theme | `AMBIANCES` array |
+| Share of each color in the swarm | `POIDS` array |
+| Default number of particles | `DEFAUT.nombre` |
+| Show the clock by default | `DEFAUT.horloge` |
 
-Le fond (dégradé de nuit) et l'horloge se règlent dans `css/style.css`.
+The background (night gradient) and the clock are styled in `css/style.css`.
 
-## Comment ça marche
+## How it works
 
-1. Chaque aiguille est un petit **ressort amorti** attiré vers un point placé autour du curseur.
-   Chaque aiguille a sa propre raideur : les plus lentes traînent derrière, ce qui crée la vague.
-2. Au repos, les points cibles sont répartis sur un **disque qui tourne**, et les aiguilles s'orientent vers l'extérieur.
-3. À chaque image, le script calcule les positions et construit **deux triangles par aiguille** :
-   une queue transparente et une pointe claire. Le tout est envoyé à la carte graphique en un seul appel WebGL,
-   en **mélange additif**, ce qui donne l'effet lumineux.
-4. La position suivie glisse doucement vers la souris, et la physique est découpée en petits pas :
-   l'animation reste fluide même si le navigateur ralentit.
+1. Each needle is a small **damped spring** pulled toward a target point around the cursor.
+   Every needle has its own stiffness: the slower ones lag behind, which creates the wave.
+2. At rest, the target points are spread over a **spinning disc**, and the needles turn to point outward.
+3. On every frame, the script computes the positions and builds **two triangles per needle**:
+   a transparent tail and a bright tip. Everything is sent to the GPU in a single WebGL draw call,
+   with **additive blending**, which creates the glow.
+4. The followed point glides smoothly toward the mouse, and the physics runs in small sub-steps,
+   so the animation stays smooth even if the browser slows down.
 
-## Mettre en ligne avec GitHub Pages
+## Deploy with GitHub Pages
 
-1. Pousse le dépôt sur GitHub.
-2. Va dans **Settings → Pages**.
-3. Dans *Source*, choisis la branche `main` et le dossier `/ (root)`, puis enregistre.
-4. Au bout d'une minute, le site est en ligne sur `https://<ton-pseudo>.github.io/essaim-lumineux/`.
+1. Push the repository to GitHub.
+2. Go to **Settings → Pages**.
+3. Under *Source*, pick the `main` branch and the `/ (root)` folder, then save.
+4. After a minute, the site is live at `https://<your-username>.github.io/essaim-lumineux/`.
 
-## Compatibilité
+## Compatibility
 
-Chrome, Edge, Firefox et Safari récents, sur ordinateur et sur mobile. Il faut que WebGL soit activé.
+Recent Chrome, Edge, Firefox and Safari, on desktop and mobile. WebGL must be enabled.
 
-## Licence
+## License
 
-[MIT](LICENSE) © 2026 Amine Jebali ([@ukiyoaj](https://github.com/ukiyoaj)). Tu peux l'utiliser, le modifier et le partager librement, en gardant la mention de licence.
+[MIT](LICENSE) © 2026 Amine Jebali ([@ukiyoaj](https://github.com/ukiyoaj)). You're free to use, modify and share it, as long as you keep the license notice.
